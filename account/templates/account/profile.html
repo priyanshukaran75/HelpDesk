@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ profile.user.username }} | Profile{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="profile-container">
+
+    <!-- Profile Header -->
+    <div class="profile-header">
+
+        <div class="profile-avatar">
+
+            {% if profile.profile_image %}
+                <img src="{{ profile.profile_image.url }}" alt="{{ profile.user.username }}">
+            {% else %}
+                <div class="avatar-placeholder">
+                    {{ profile.user.username|first|upper }}
+                </div>
+            {% endif %}
+
+        </div>
+
+        <div class="profile-info">
+
+            <h1>{{ profile.user.get_full_name|default:profile.user.username }}</h1>
+
+            <p class="username">
+                @{{ profile.user.username }}
+            </p>
+
+            <p>
+                <strong>Email :</strong>
+                {{ profile.user.email }}
+            </p>
+
+            <p>
+                <strong>Department :</strong>
+                {{ profile.department }}
+            </p>
+
+            <p>
+                <strong>Designation :</strong>
+                {{ profile.designation }}
+            </p>
+
+            <p>
+                <strong>Phone :</strong>
+                {{ profile.phone }}
+            </p>
+
+        </div>
+
+        <div class="profile-action">
+
+            {% if request.user == profile.user %}
+                <a href="{% url 'edit_profile' %}" class="btn-primary">
+                    Edit Profile
+                </a>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- Ticket Statistics -->
+
+    <div class="stats-container">
+
+        <div class="stat-card">
+            <h2>{{ total_tickets }}</h2>
+            <p>Total Tickets</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>{{ open_tickets }}</h2>
+            <p>Open</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>{{ in_progress }}</h2>
+            <p>In Progress</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>{{ resolved }}</h2>
+            <p>Resolved</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>{{ closed }}</h2>
+            <p>Closed</p>
+        </div>
+
+    </div>
+
+    <!-- Ticket List -->
+
+    <div class="ticket-section">
+
+    {% if request.user.is_staff %}
+        <h2>All Tickets</h2>
+    {% else %}
+        <h2>My Tickets</h2>
+    {% endif %}
+
+    {% if tickets %}
+
+        {% for ticket in tickets %}
+
+        <div class="ticket-card">
+
+            <div class="ticket-header">
+
+                <h3>{{ ticket.title }}</h3>
+
+                <span class="status">
+                    {{ ticket.status }}
+                </span>
+
+            </div>
+
+            {% if request.user.is_staff %}
+            <p>
+                <strong>Raised By:</strong>
+                {{ ticket.user.user.username }}
+            </p>
+            {% endif %}
+
+            <p>
+                <strong>Category:</strong>
+                {{ ticket.category }}
+            </p>
+
+            <p>
+                <strong>Priority:</strong>
+                {{ ticket.priority }}
+            </p>
+
+            <p>
+                {{ ticket.description|truncatewords:30 }}
+            </p>
+
+            <p class="date">
+                <strong>Created:</strong>
+                {{ ticket.created|date:"d M Y, h:i A" }}
+            </p>
+
+            <a href="{% url 'ticket:ticket_detail' ticket.id %}" class="view-btn">
+                View Details
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty-ticket">
+            <p>No tickets have been created yet.</p>
+        </div>
+
+    {% endif %}
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base1.html" %}
+{% block title %}Create Ticket{% endblock %}
+{% block content %}
+<div class="ticket-container">
+    <div class="ticket-card">
+        <h2>Create New Support Ticket</h2>
+        <p>
+            Please provide complete details about your issue.
+            Our IT team will review your request as soon as possible.
+        </p>
+        {% if ticket %}
+            <div class="success-message">
+                <h3>✅ Ticket Created Successfully</h3>
+                <p>
+                    Your support ticket has been submitted successfully.
+                </p>
+                <a href="{% url 'dashboard' %}" class="btn">
+                    Go to Dashboard
+                </a>
+            </div>
+        {% else %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn-submit">
+                    Submit Ticket
+                </button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

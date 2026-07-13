@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<div class="login-page">
+
+    <div class="login-form">
+
+        <h1>Welcome Back</h1>
+
+        <p class="login-description">
+            Sign in to your IT Help Desk account.
+        </p>
+
+        {% if form.errors %}
+            <div class="error-message">
+                Invalid username or password.
+            </div>
+        {% endif %}
+
+        <form method="post" action="{% url 'login' %}">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <input type="hidden" name="next" value="{{ next }}">
+
+            <button type="submit" class="login-btn">
+                Log In
+            </button>
+
+        </form>
+
+        <a href="{% url 'password_reset' %}" class="forgot-link">
+            Forgot Password?
+        </a>
+
+        <div class="divider">
+            <span>OR</span>
+        </div>
+
+        <a href="{% provider_login_url 'google' %}" class="google-btn">
+            <img src="https://developers.google.com/identity/images/g-logo.png"
+                 alt="Google"
+                 width="20">
+            Sign in with Google
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

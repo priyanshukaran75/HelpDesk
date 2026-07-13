@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+
+{% block title %}
+Google Sign In
+{% endblock %}
+
+{% block content %}
+
+<div class="google-login-container">
+
+    <div class="google-card">
+
+        <img src="https://developers.google.com/identity/images/g-logo.png"
+             width="70"
+             alt="Google">
+
+        <h2>Sign In with Google</h2>
+
+        <p>
+            You are about to sign in using your Google account.
+        </p>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <button type="submit" class="google-btn">
+                Continue with Google
+            </button>
+
+        </form>
+
+        <a href="{% url 'login' %}" class="cancel-btn">
+            Cancel
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

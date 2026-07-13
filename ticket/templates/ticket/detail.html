@@ -1,0 +1,158 @@
+{% extends "base1.html" %}
+
+{% block title %}{{ ticket.title }}{% endblock %}
+
+{% block content %}
+
+<div class="ticket-detail-container">
+
+    <div class="ticket-detail-card">
+
+        <h1>{{ ticket.title }}</h1>
+
+        <hr>
+
+        <table class="ticket-table">
+
+            <tr>
+                <th>Ticket Number:</th>
+                <td>{{ ticket.ticket_number }}</td>
+            </tr>
+
+            <tr>
+                <th>Created By</th>
+                <td>{{ ticket.user.user.username }}</td>
+            </tr>
+
+            <tr>
+                <th>Category</th>
+                <td>{{ ticket.category }}</td>
+            </tr>
+
+            <tr>
+                <th>Priority</th>
+                <td>
+                    <span class="priority-{{ ticket.priority|lower }}">
+                        {{ ticket.priority }}
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <th>Status</th>
+                <td>
+                    <span class="status-{{ ticket.status|slugify }}">
+                        {{ ticket.status }}
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <th>Created On</th>
+                <td>{{ ticket.created|date:"d M Y, h:i A" }}</td>
+            </tr>
+
+            <tr>
+                <th>Last Updated</th>
+                <td>{{ ticket.updated|date:"d M Y, h:i A" }}</td>
+            </tr>
+
+        </table>
+
+        <h3>Description</h3>
+
+        <div class="description">
+            {{ ticket.description|linebreaks }}
+        </div>
+
+        {% if ticket.attachment %}
+        <h3>Attachment</h3>
+
+        <p>
+            <a href="{{ ticket.attachment.url }}" target="_blank">
+                📎 View / Download Attachment
+            </a>
+        </p>
+        {% endif %}
+
+    </div>
+
+    <!-- Conversation -->
+
+    <div class="conversation-card">
+
+        <h2>Conversation</h2>
+
+        {% for comment in ticket.comments.all %}
+
+        <div class="comment-card">
+
+            <div class="comment-header">
+
+                <strong>{{ comment.user.user.username }}</strong>
+
+                {% if comment.user.user.is_staff %}
+                    <span class="admin-badge">Admin</span>
+                {% else %}
+                    <span class="user-badge">User</span>
+                {% endif %}
+
+                <small>
+                    {{ comment.created|date:"d M Y, h:i A" }}
+                </small>
+
+            </div>
+
+            <div class="comment-body">
+
+                {{ comment.comment|linebreaks }}
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <p class="no-comments">
+            No conversation yet.
+        </p>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- Reply Form -->
+
+    <div class="reply-card">
+
+        <h2>Add Reply</h2>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="btn-reply">
+                Send Reply
+            </button>
+
+        </form>
+
+    </div>
+
+    <div class="buttons">
+
+        <button type="button"
+                class="btn-back"
+                onclick="history.back()">
+
+            ← Back
+
+        </button>
+
+    </div>
+
+</div>
+
+{% endblock %}

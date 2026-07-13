@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Log-in{% endblock %}
+{% block content %}
+<div class="ticket-section">
+        <h2>My Tickets</h2>
+        {% if tickets %}
+            {% for ticket in tickets %}
+                <div class="ticket-card">
+                    <div class="ticket-header">
+                        <h3>{{ ticket.title }}</h3>
+                        <span class="status">
+                            {{ ticket.status }}
+                        </span>
+                    </div>
+                    <p>
+                        <strong>Category:</strong>
+                        {{ ticket.category }}
+                    </p>
+                    <p>
+                        <strong>Priority:</strong>
+                        {{ ticket.priority }}
+                    </p>
+                    <p>
+                        {{ ticket.description|truncatewords:30 }}
+                    </p>
+                    <p class="date">
+                        Created :
+                        {{ ticket.created |date:"d M Y, h:i A" }}
+                    </p>
+                    <a href="{% url 'ticket:ticket_detail' ticket.id%}" class="view-btn">
+                        View Details
+                    </a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-ticket">
+                <p>No tickets have been created yet.</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}
+Manage Tickets
+{% endblock %}
+{% block content %}
+<h1>Manage Tickets</h1>
+<table class="ticket-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for ticket in tickets %}
+        <tr>
+            <td>#{{ ticket.id }}</td>
+            <td>{{ ticket.user.user.username }}</td>
+            <td>{{ ticket.title }}</td>
+            <td>{{ ticket.category }}</td>
+            <td>{{ ticket.priority }}</td>
+            <td>{{ ticket.status }}</td>
+            <td>
+                <a href="{% url 'manage_ticket_detail' ticket.id %}"
+                class="btn-view">
+                    View
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

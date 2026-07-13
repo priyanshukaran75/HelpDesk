@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+    <h1>Dashboard</h1>
+    <p>Welcome, {{ request.user.first_name|default:request.user.username }}!</p>
+
+    <div class="dashboard-actions">
+        {% if not request.user.is_staff %}
+        <div class="create-ticket">
+            <a href="{% url 'ticket:ticket_create' %}" class="btn-create-ticket">
+                + Create New Ticket
+            </a>
+        </div>
+        {% endif%}
+        <div class="ticket-section">
+            {% if not request.user.is_staff %}
+            <h2>My Tickets</h2>
+            {% else %}
+            <h2>All Tickets</h2>
+            {% endif%}
+            {% if tickets %}
+            <div class="tickets-grid">
+                {% for ticket in tickets %}
+                <div class="ticket">
+                    <div class="ticket-card">
+                        <div class="ticket-header">
+                            <h3>{{ ticket.title }}</h3>
+                            <span class="status {% if ticket.status == 'Open' %}status-open{% elif ticket.status == 'In Progress' %}status-progress{% elif ticket.status == 'Resolved' %}status-resolved{% endif %}">
+                                {{ ticket.status }}
+                            </span>
+                        </div>
+
+                        <p><strong>Category:</strong> {{ ticket.category }}</p>
+                        <p><strong>Priority:</strong> {{ ticket.priority }}</p>
+                        <p>{{ ticket.description|truncatewords:30 }}</p>
+                        <p class="date">
+                            <strong>Created:</strong>
+                            {{ ticket.created|date:"d M Y, h:i A" }}
+                        </p>
+
+                        <div class="ticket-details" id="details-{{ forloop.counter }}">
+                            <hr>
+                            <p><strong>Ticket Number:</strong>{{ ticket.ticket_number }}</p>
+                            <p><strong>Created By:</strong> {{ ticket.user.user.username }}</p>
+                            <p><strong>Status:</strong> {{ ticket.status }}</p>
+                            <p><strong>Description:</strong></p>
+                            <p>{{ ticket.description }}</p>
+
+                            {% if ticket.attachment %}
+                            <p>
+                                <strong>Attachment:</strong>
+                                <a href="{{ ticket.attachment.url }}" target="_blank">
+                                    View Attachment
+                                </a>
+                            </p>
+                            {% endif %}
+
+                            <p>
+                                <strong>Created:</strong>
+                                {{ ticket.created|date:"d M Y, h:i A" }}
+                            </p>
+                        </div>
+
+                        <div class="ticket-actions">
+                            <span class="live-status status-badge {% if ticket.status == 'Open' %}status-open{% elif ticket.status == 'In Progress' %}status-progress{% elif ticket.status == 'Resolved' %}status-resolved{% else %}status-closed{% endif %}"
+                                  id="live-status-{{ ticket.id }}"
+                                  data-ticket-id="{{ ticket.id }}"
+                                  data-status-url="{% url 'ticket_status_api' ticket.id %}">
+                                <span class="status-dot"></span>
+                                {{ ticket.status }}
+                            </span>
+
+                            <button class="refresh-btn" onclick="refreshStatus('{{ forloop.counter }}')"  title="Refresh status">
+                                ⟳
+                            </button>
+
+                            <button class="view-btn" onclick="toggleDetails('{{ forloop.counter }}')">
+                                View Details ->
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-ticket">
+                <h3>No Tickets Found</h3>
+                <p>You haven't created any tickets yet.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<script>
+    // Toggle the expandable details section for a ticket card
+    function toggleDetails(counter) {
+        const details = document.getElementById('details-' + counter);
+        const button = event.currentTarget;
+        if (!details) return;
+        details.classList.toggle('open');
+        if (details.classList.contains('open')) {
+            button.innerHTML = "<- Back";
+        } 
+        else {
+            button.innerHTML = "View Details ->";
+        }
+    }
+    // Swap badge classes/text to match the latest fetched status
+    function applyStatus(badge, status) {
+        badge.classList.remove('status-open', 'status-progress', 'status-resolved', 'status-closed');
+        const map = {
+            'Open': 'status-open',
+            'In Progress': 'status-progress',
+            'Resolved': 'status-resolved',
+            'Closed': 'status-closed'
+        };
+        badge.classList.add(map[status] || 'status-closed');
+
+        // Keep the dot span, replace only the trailing text node
+        const dot = badge.querySelector('.status-dot');
+        badge.textContent = '';
+        badge.appendChild(dot);
+        badge.appendChild(document.createTextNode(' ' + status));
+    }
+
+    // Fetch the latest status for a single ticket from the API endpoint
+    async function fetchStatus(ticketId) {
+        const badge = document.getElementById('live-status-' + ticketId);
+        if (!badge) return;
+        try {
+            const res = await fetch(badge.dataset.statusUrl);
+            if (!res.ok) return;
+            const data = await res.json();
+            applyStatus(badge, data.status);
+        } catch (err) {
+            console.error('Status fetch failed:', err);
+        }
+    }
+
+    // Manual refresh triggered by clicking the ⟳ button
+    function refreshStatus(ticketId) {
+        const btn = event.currentTarget;
+        btn.classList.add('spinning');
+        fetchStatus(ticketId).finally(() => {
+            setTimeout(() => btn.classList.remove('spinning'), 400);
+        });
+    }
+
+    // Auto-poll every ticket's status every 10 seconds
+    document.addEventListener('DOMContentLoaded', () => {
+        const badges = document.querySelectorAll('.live-status');
+        badges.forEach(badge => {
+            const id = badge.dataset.ticketId;
+            setInterval(() => fetchStatus(id), 10000);
+        });
+    });
+</script>
+{% endblock %}

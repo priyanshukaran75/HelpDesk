@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}
+Manage Ticket
+{% endblock %}
+{% block content %}
+<h2>Ticket Details</h2>
+<div class="ticket-card">
+    <p><strong>Ticket ID:</strong> #{{ ticket.id }}</p>
+    <p><strong>User:</strong>
+        {{ ticket.user.user.username }}
+    </p>
+    <p><strong>Title:</strong>
+        {{ ticket.title }}
+    </p>
+    <p><strong>Category:</strong>
+        {{ ticket.category }}
+    </p>
+    <p><strong>Priority:</strong>
+        {{ ticket.priority }}
+    </p>
+    <p><strong>Status:</strong>
+        {{ ticket.status }}
+    </p>
+    <p><strong>Description:</strong></p>
+    <p>{{ ticket.description }}</p>
+    {% if ticket.attachment %}
+        <p>
+            <strong>Attachment:</strong>
+            <a href="{{ ticket.attachment.url }}" target="_blank">
+                View Attachment
+            </a>
+        </p>
+    {% endif %}
+    <hr>
+    <div class="status-update-form">
+        <form method="post" action="{% url 'update_ticket_status' ticket.id %}">
+            {% csrf_token %}
+            <select name="status">
+                <option value="Open" {% if ticket.status == "Open" %}selected{% endif %}>Open</option>
+                <option value="In Progress" {% if ticket.status == "In Progress" %}selected{% endif %}>In Progress</option>
+                <option value="Resolved" {% if ticket.status == "Resolved" %}selected{% endif %}>Resolved</option>
+                <option value="Closed" {% if ticket.status == "Closed" %}selected{% endif %}>Closed</option>
+            </select>
+            <button type="submit" class="btn-update-status">Update</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
