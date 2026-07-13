@@ -1552,3 +1552,151 @@ h2 {
         width: 100%;
     }
 }
+
+
+
+
+
+.ticket-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #f0f0f0;
+}
+
+/* Refresh icon — small circular button */
+.refresh-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid #e5e5e8;
+    background: #fff;
+    border-radius: 50%;
+    color: #888;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.refresh-btn:hover {
+    background: #f5f5f7;
+    color: #333;
+}
+
+.refresh-btn.spinning {
+    animation: spin 0.5s linear;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Status badge */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.status-open {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-progress {
+    background: #fff3e0;
+    color: #e68a00;
+}
+
+.status-resolved {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.status-closed {
+    background: #f0f0f0;
+    color: #666;
+}
+
+/* Push view/delete buttons to the right */
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.view-btn {
+    display: inline-flex;
+    align-items: center;
+    height: 34px;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4c46d6;
+    background: #eeedfd;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.view-btn:hover {
+    background: #e0deff;
+    transform: translateY(-1px);
+}
+
+.delete-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 34px;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #e63946;
+    background: #fdecea;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.delete-btn:hover {
+    background: #e63946;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* Stack on small screens */
+@media (max-width: 480px) {
+    .ticket-actions {
+        flex-wrap: wrap;
+    }
+    .action-buttons {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-end;
+    }
+}

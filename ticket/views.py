@@ -3,6 +3,7 @@ from .models import Ticket
 from .forms import Ticketcreateform,TicketCommentForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 def ticket_create(request):
     ticket=None
     if request.method == 'POST':
@@ -47,5 +48,33 @@ def ticket_detail(request, id):
             "ticket": ticket,
             "form": form,
         },
+    )
+@login_required
+def delete_ticket(request, id):
+    ticket = get_object_or_404(
+        Ticket,
+        id=id,
+        user=request.user.profile
+    )
+    if request.method == "POST":
+        if ticket.status != "Open":
+            messages.error(
+                request,
+                "Only Open tickets can be deleted."
+            )
+            return redirect(request.GET.get("next") or request.POST.get("next") or "myticket")
+        ticket.delete()
+        messages.success(
+            request,
+            "Ticket deleted successfully."
+        )
+        return redirect(request.GET.get("next") or request.POST.get("next") or "myticket")
+    
+    return render(
+        request,
+        "ticket/delete_ticket.html",
+        {
+            "ticket": ticket
+        }
     )
 # Create your views here.

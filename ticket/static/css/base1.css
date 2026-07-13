@@ -1114,3 +1114,87 @@ a.btn:hover {
   .conversation-card,
   .reply-card { padding: 20px; }
 }
+/* ------------------------------------------------------------------------
+  delete
+   ------------------------------------------------------------------------ */
+.delete-container {
+    max-width: 480px;
+    margin: 80px auto;
+    padding: 40px 36px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    border-top: 5px solid #e63946;
+}
+
+.delete-container h2 {
+    color: #1d1d1f;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.delete-container h2::before {
+    content: "⚠️";
+    display: block;
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+.delete-container p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.delete-container p strong {
+    color: #e63946;
+    font-weight: 600;
+}
+
+.delete-container form {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+}
+
+.btn-delete {
+    background: #e63946;
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn-delete:hover {
+    background: #c62d3a;
+    transform: translateY(-1px);
+}
+
+.btn-delete:active {
+    transform: translateY(0);
+}
+
+.btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1d1d1f;
+    background: #f0f0f2;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn-cancel:hover {
+    background: #e2e2e5;
+    transform: translateY(-1px);
+}

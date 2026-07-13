@@ -30,6 +30,11 @@
                     <a href="{% url 'ticket:ticket_detail' ticket.id%}" class="view-btn">
                         View Details
                     </a>
+                    
+                    <a href="{% url 'ticket:delete_ticket' ticket.id %}?next={{ request.path }}" class="delete-btn">
+                        Delete
+                    </a>
+                    
                 </div>
             {% endfor %}
         {% else %}

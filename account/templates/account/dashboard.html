@@ -63,21 +63,29 @@
                         </div>
 
                         <div class="ticket-actions">
+                            <button class="refresh-btn" onclick="refreshStatus('{{ forloop.counter }}')" title="Refresh status">
+                                ⟳
+                            </button>
+
                             <span class="live-status status-badge {% if ticket.status == 'Open' %}status-open{% elif ticket.status == 'In Progress' %}status-progress{% elif ticket.status == 'Resolved' %}status-resolved{% else %}status-closed{% endif %}"
-                                  id="live-status-{{ ticket.id }}"
-                                  data-ticket-id="{{ ticket.id }}"
-                                  data-status-url="{% url 'ticket_status_api' ticket.id %}">
+                                id="live-status-{{ ticket.id }}"
+                                data-ticket-id="{{ ticket.id }}"
+                                data-status-url="{% url 'ticket_status_api' ticket.id %}">
                                 <span class="status-dot"></span>
                                 {{ ticket.status }}
                             </span>
 
-                            <button class="refresh-btn" onclick="refreshStatus('{{ forloop.counter }}')"  title="Refresh status">
-                                ⟳
-                            </button>
+                            <div class="action-buttons">
+                                <button class="view-btn" onclick="toggleDetails('{{ forloop.counter }}')">
+                                    View Details ->
+                                </button>
 
-                            <button class="view-btn" onclick="toggleDetails('{{ forloop.counter }}')">
-                                View Details ->
-                            </button>
+                                {% if not request.user.is_staff %}
+                                <a href="{% url 'ticket:delete_ticket' ticket.id %}?next={{ request.path }}" class="delete-btn">
+                                    🗑 Delete
+                                </a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
