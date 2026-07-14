@@ -7,7 +7,7 @@ Manage Tickets
 <table class="ticket-table">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>Ticket Number</th>
             <th>User</th>
             <th>Title</th>
             <th>Category</th>
@@ -19,7 +19,7 @@ Manage Tickets
     <tbody>
     {% for ticket in tickets %}
         <tr>
-            <td>#{{ ticket.id }}</td>
+            <td>{{ ticket.ticket_number }}</td>
             <td>{{ ticket.user.user.username }}</td>
             <td>{{ ticket.title }}</td>
             <td>{{ ticket.category }}</td>
