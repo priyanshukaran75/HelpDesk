@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Login Cancelled{% endblock %}
+{% block content %}
+<div class="login-cancelled">
+    <h1>Login Cancelled</h1>
+    <p>
+        You cancelled the Google sign-in process.
+    </p>
+    <a href="{% url 'login' %}" class="btn-primary">
+        Back to Login
+    </a>
+</div>
+{% endblock %}
