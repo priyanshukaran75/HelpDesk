@@ -33,18 +33,22 @@ def user_login(request):
     return render(request, 'account/login.html', {'form': form})
 @login_required
 def dashboard(request):
+    profile, created = Profile.objects.get_or_create(
+        user=request.user
+    )
     if request.user.is_staff:
-        tickets = Ticket.objects.all().order_by('-created')
+        tickets = Ticket.objects.all().order_by("-created")
     else:
         tickets = Ticket.objects.filter(
-            user=request.user.profile
-        ).order_by('-created')
+            user=profile
+        ).order_by("-created")
     return render(
         request,
-        'account/dashboard.html',
-        {'section': 'dashboard',
-         "tickets": tickets,
-        }
+        "account/dashboard.html",
+        {
+            "section": "dashboard",
+            "tickets": tickets,
+        },
     )
 def register(request):
     if request.method == 'POST':

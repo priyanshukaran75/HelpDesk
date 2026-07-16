@@ -1746,3 +1746,33 @@ h2 {
         justify-content: flex-end;
     }
 }
+
+
+
+.login-error-container{
+    max-width:600px;
+    margin:80px auto;
+    background:#fff;
+    padding:40px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.login-error-container h1{
+    color:#dc2626;
+    margin-bottom:20px;
+}
+
+.login-error-container p{
+    margin-bottom:30px;
+}
+
+.btn-primary{
+    display:inline-block;
+    background:#2563eb;
+    color:#fff;
+    padding:12px 24px;
+    border-radius:8px;
+    text-decoration:none;
+}

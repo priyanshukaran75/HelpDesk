@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Google Sign-in Cancelled{% endblock %}
+
+{% block content %}
+
+<div class="login-error-container">
+
+    <h1>Google Sign-in Cancelled</h1>
+
+    <p>
+        You cancelled the Google sign-in process.
+    </p>
+
+    <a href="{% url 'login' %}" class="btn-primary">
+        Back to Login
+    </a>
+
+</div>
+
+{% endblock %}
