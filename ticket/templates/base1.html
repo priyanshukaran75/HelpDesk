@@ -6,6 +6,84 @@
   <link href="{% static "css/base1.css" %}" rel="stylesheet">
 </head>
 <body>
+ <div class="header-section">
+    <!-- Header -->
+    <header id="header">
+        <div class="logo">
+            <a href="{% url 'dashboard' %}">
+                IT Help Desk
+            </a>
+        </div>
+        {% if request.user.is_authenticated %}
+        <nav>
+            <ul class="menu">
+                <li {% if section == "dashboard" %}class="selected"{% endif %}>
+                    <a href="{% url 'dashboard' %}">
+                        Dashboard
+                    </a>
+                </li>
+                {% if not request.user.is_staff %}
+                <li {% if section == "tickets" %}class="selected"{% endif %}>
+                    <a href="{% url 'myticket' %}">
+                        My Tickets
+                    </a>
+                </li>
+                {% endif%}
+                {% if request.user.is_staff %}
+                <li {% if section == "manage" %}class="selected"{% endif %}>
+                    <a href="{% url 'manage_tickets' %}">
+                        Manage Tickets
+                    </a>
+                </li>
+                {% endif %}
+                <li {% if section == "profile" %}class="selected"{% endif %}>
+                    <a href="{% url 'profile' request.user.username %}">
+                        Profile
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <!-- Search -->
+       <div class="header-search">
+            <form action="{% url 'search_ticket' %}" method="get" class="search-form">
+                <input
+                    type="text"
+                    name="search"
+                    class="search-input"
+                    placeholder="Search ticket"
+                    autocomplete="off">
+                <button type="submit" class="search-btn" aria-label="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+            </form>
+        </div>
+        {% endif %}
+        <div class="user-info">
+            {% if request.user.is_authenticated %}
+                <span>
+                    Welcome,
+                    <strong>
+                        {{ request.user.first_name|default:request.user.username }}
+                    </strong>
+                </span>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">
+                        Logout
+                    </button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                |
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </div>
+    </header>
+  </div>
 <div id="content">
     {% block content %}
     {% endblock %}
