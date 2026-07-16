@@ -1363,7 +1363,7 @@ form p textarea:focus {
   font-weight: 600;
   font-size: 0.9rem;
   color: #fff;
-  background: var(--accent);
+  background: var(--brand);
   border: none;
   border-radius: 8px;
   padding: 0.7rem 1.4rem;
@@ -1376,7 +1376,7 @@ form p textarea:focus {
 .btn-save:hover,
 .btn-primary:hover,
 .btn-reply:hover {
-  background: var(--accent-dark);
+  background: var(--brand-dark);
 }
 
 .btn-save:active,
