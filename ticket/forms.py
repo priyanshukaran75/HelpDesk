@@ -21,3 +21,7 @@ class TicketCommentForm(forms.ModelForm):
                 }
             )
         }
+class TicketUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ["title","description","attachment"]

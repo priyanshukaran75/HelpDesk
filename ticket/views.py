@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import Ticket
-from .forms import Ticketcreateform,TicketCommentForm
+from .forms import Ticketcreateform,TicketCommentForm,TicketUpdateForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -75,6 +75,43 @@ def delete_ticket(request, id):
         "ticket/delete_ticket.html",
         {
             "ticket": ticket
+        }
+    )
+@login_required
+def ticket_edit(request,id):
+    ticket = get_object_or_404(
+        Ticket,
+        id=id,
+        user=request.user.profile
+    )
+    if request.method == "POST":
+        ticket_form = TicketUpdateForm(
+            request.POST,
+            request.FILES,
+            instance=ticket
+        )
+        if ticket_form.is_valid():
+            ticket_form.save()
+            messages.success(
+                request,
+                "Your ticket has been updated successfully."
+            )
+            return redirect("ticket:ticket_detail", id=ticket.id)
+        else:
+            messages.error(
+                request,
+                "Please correct the errors below."
+            )
+    else:
+        ticket_form = TicketUpdateForm(
+            instance=ticket
+        )
+    return render(
+        request,
+        "ticket/edit.html",
+        {
+            "ticket_form": ticket_form,
+             "ticket": ticket,
         }
     )
 # Create your views here.
