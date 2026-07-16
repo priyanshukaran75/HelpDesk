@@ -5,19 +5,20 @@
 {% block content %}
 
 <div class="ticket-detail-container">
-    {% if not request.user.is_staff %}
-    <div class="edit-ticket">
-        <a href="{% url 'ticket:ticket_edit' ticket.id %}" class="btn-primary">
-                    Edit Ticket
-        </a>
-    </div>
-    {% endif %}
     <div class="ticket-detail-card">
 
-        <h1>{{ ticket.title }}</h1>
-
+        <div class="ticket-title-row">
+            <h1>{{ ticket.title }}</h1>
+            {% if not request.user.is_staff %}
+            <div class="edit-ticket">
+                <a href="{% url 'ticket:ticket_edit' ticket.id %}" class="btn-primary">
+                    Edit Ticket
+                </a>
+            </div>
+            {% endif %}
+        </div>
         <hr>
-
+        
         <table class="ticket-table">
 
             <tr>

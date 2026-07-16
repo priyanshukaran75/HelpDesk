@@ -1359,18 +1359,20 @@ form p textarea:focus {
 .btn-save,
 .btn-primary,
 .btn-reply {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--brand);
+  color: #fff;
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: 0.9rem;
-  color: #fff;
-  background: var(--brand);
+  font-size: 0.88rem;
   border: none;
-  border-radius: 8px;
-  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius-sm);
+  padding: 11px 24px;
   cursor: pointer;
   text-decoration: none;
-  display: inline-block;
-  transition: background 0.15s ease, transform 0.1s ease;
+  transition: background 0.15s var(--ease), transform 0.15s var(--ease);
 }
 
 .btn-save:hover,
@@ -1477,13 +1479,13 @@ form p textarea:focus {
   font-size: 1.05rem;
 }
 
-.ticket-detail-card a {
+.ticket-detail-card a:not(.btn-primary):not(.btn-save):not(.btn-reply):not(.btn-back):not(.btn-cancel) {
   color: var(--accent);
   font-weight: 600;
   text-decoration: none;
 }
 
-.ticket-detail-card a:hover {
+.ticket-detail-card a:not(.btn-primary):not(.btn-save):not(.btn-reply):not(.btn-back):not(.btn-cancel):hover {
   text-decoration: underline;
 }
 
@@ -1605,4 +1607,22 @@ input:focus-visible,
 textarea:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+
+
+.ticket-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+
+.ticket-title-row h1 {
+  margin-bottom: 0;
+}
+
+.edit-ticket {
+  margin-bottom: 0;
 }
